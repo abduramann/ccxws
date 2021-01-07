@@ -63,10 +63,7 @@ class SmartWss extends EventEmitter {
     return new Promise(resolve => {
       let wssPath = this._wssPath;
       this.emit("connecting");
-      this._wss = new WebSocket(wssPath, {
-        perMessageDeflate: false,
-        handshakeTimeout: 15000,
-      });
+      this._wss = new WebSocket(wssPath);
       this._wss.on("open", () => {
         this._connected = true;
         this.emit("open"); // deprecated
