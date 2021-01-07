@@ -1,5 +1,5 @@
 const { EventEmitter } = require("events");
-const WebSocket = require("ws");
+const WebSocket = require("isomorphic-ws");
 
 class SmartWss extends EventEmitter {
   constructor(wssPath) {
