@@ -64,12 +64,12 @@ class SmartWss extends EventEmitter {
       let wssPath = this._wssPath;
       this.emit("connecting");
       this._wss = new WebSocket(wssPath);
-      this._wss.on("open", () => {
+      this._wss.onopen = () => {
         this._connected = true;
         this.emit("open"); // deprecated
         this.emit("connected");
         resolve();
-      });
+      };
       this._wss.on("close", () => this._closeCallback());
       this._wss.on("error", err => this.emit("error", err));
       this._wss.on("message", msg => this.emit("message", msg));
