@@ -72,7 +72,7 @@ class SmartWss extends EventEmitter {
       };
       this._wss.onclose = () => this._closeCallback();
       this._wss.onerror = (err) => this.emit("error", err);
-      this._wss.onmessage = (msg) => this.emit("message", msg);
+      this._wss.onmessage = (msg) => this.emit("message", msg.data);
     });
   }
 
