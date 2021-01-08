@@ -30,11 +30,11 @@ class SmartWss extends EventEmitter {
     this.emit("closing");
     if (this._wss) {
       this._wss.removeAllListeners();
-      this._wss.on("close", () => this.emit("closed"));
-      this._wss.on("error", err => {
+      this._wss.onclose = () => this.emit("closed");
+      this._wss.onerror = (err) => {
         if (err.message !== "WebSocket was closed before the connection was established") return;
         this.emit("error", err);
-      });
+      };
       this._wss.close();
     }
   }
@@ -70,9 +70,9 @@ class SmartWss extends EventEmitter {
         this.emit("connected");
         resolve();
       };
-      this._wss.on("close", () => this._closeCallback());
-      this._wss.on("error", err => this.emit("error", err));
-      this._wss.on("message", msg => this.emit("message", msg));
+      this._wss.onclose = () => this._closeCallback();
+      this._wss.onerror = (err) => this.emit("error", err);
+      this._wss.onmessage = (msg) => this.emit("message", msg);
     });
   }
 
