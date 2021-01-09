@@ -30,7 +30,9 @@ async function get(uri) {
 async function getResponse(uri) {
   return new Promise((resolve, reject) => {
     
-fetch(uri)
+fetch(uri, {headers: {
+    'Access-Control-Allow-Origin': '*',
+  },})
   .then(function (res) {
         results = res;
         if (res.status !== 200) {
