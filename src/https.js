@@ -1,7 +1,5 @@
 const https = require("https");
 const url = require("url");
-const axios = require("axios");
-const fetch = require("node-fetch");
 
 module.exports = {
   get,
@@ -29,49 +27,25 @@ async function get(uri) {
  */
 async function getResponse(uri) {
   return new Promise((resolve, reject) => {
-    
-fetch(uri, {headers: {
-    'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
-  },})
-  .then(function (res) {
-        results = res;
-        if (res.status !== 200) {
-          return reject(new Error(results.json()));
+    let req = https.get(url.parse(uri), res => {
+      let results = [];
+      res.on("error", reject);
+      res.on("data", data => results.push(data));
+      res.on("end", () => {
+        results = Buffer.concat(results);
+        if (res.statusCode !== 200) {
+          return reject(new Error(results.toString()));
         } else {
-          const resultsParsed = results.json();
+          const resultsParsed = JSON.parse(results);
           return resolve({
             data: resultsParsed,
             response: res,
           });
         }
-  })
-  .catch(function (error) {
-    return reject(new Error(results.text()));
-  })
-  .then(function () {
-    // always executed
-  });    
-    
-//    let req = https.get(url.parse(uri), res => {
-//      let results = [];
-//      res.on("error", reject);
-//      res.on("data", data => results.push(data));
-//      res.on("end", () => {
-//        results = Buffer.concat(results);
-//        if (res.statusCode !== 200) {
-//          return reject(new Error(results.toString()));
-//        } else {
-//          const resultsParsed = JSON.parse(results);
-//          return resolve({
-//            data: resultsParsed,
-//            response: res,
-//          });
-//        }
-//      });
-//    });
-//    req.on("error", reject);
-//    req.end();
+      });
+    });
+    req.on("error", reject);
+    req.end();
   });
 }
 
