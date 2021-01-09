@@ -27,13 +27,11 @@ async function get(uri) {
  */
 async function getResponse(uri) {
   return new Promise((resolve, reject) => {
-    let req = https.get(url.parse(uri), res => {
-      let results = [];
-      res.on("error", reject);
-      res.on("data", data => results.push(data));
-      res.on("end", () => {
-        results = Buffer.concat(results);
-        if (res.statusCode !== 200) {
+    
+axios.get(uri)
+  .then(function (res) {
+        results = res.data;
+        if (res.status !== 200) {
           return reject(new Error(results.toString()));
         } else {
           const resultsParsed = JSON.parse(results);
@@ -42,10 +40,33 @@ async function getResponse(uri) {
             response: res,
           });
         }
-      });
-    });
-    req.on("error", reject);
-    req.end();
+  })
+  .catch(function (error) {
+    return reject(new Error(results.toString()));
+  })
+  .then(function () {
+    // always executed
+  });    
+    
+//    let req = https.get(url.parse(uri), res => {
+//      let results = [];
+//      res.on("error", reject);
+//      res.on("data", data => results.push(data));
+//      res.on("end", () => {
+//        results = Buffer.concat(results);
+//        if (res.statusCode !== 200) {
+//          return reject(new Error(results.toString()));
+//        } else {
+//          const resultsParsed = JSON.parse(results);
+//          return resolve({
+//            data: resultsParsed,
+//            response: res,
+//          });
+//        }
+//      });
+//    });
+//    req.on("error", reject);
+//    req.end();
   });
 }
 
