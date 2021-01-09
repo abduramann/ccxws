@@ -1,6 +1,7 @@
 const https = require("https");
 const url = require("url");
 const axios = require("axios");
+import fetch from 'node-fetch';
 
 module.exports = {
   get,
