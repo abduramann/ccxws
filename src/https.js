@@ -32,6 +32,7 @@ async function getResponse(uri) {
     
 fetch(uri, {headers: {
     'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
   },})
   .then(function (res) {
         results = res;
