@@ -29,13 +29,13 @@ async function get(uri) {
 async function getResponse(uri) {
   return new Promise((resolve, reject) => {
     
-axios.get(uri)
+fetch(uri)
   .then(function (res) {
-        results = res.data;
+        results = res;
         if (res.status !== 200) {
-          return reject(new Error(results.toString()));
+          return reject(new Error(results.json()));
         } else {
-          const resultsParsed = JSON.parse(results);
+          const resultsParsed = results.json();
           return resolve({
             data: resultsParsed,
             response: res,
@@ -43,7 +43,7 @@ axios.get(uri)
         }
   })
   .catch(function (error) {
-    return reject(new Error(results.toString()));
+    return reject(new Error(results.text()));
   })
   .then(function () {
     // always executed
