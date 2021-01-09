@@ -1,6 +1,6 @@
 const https = require("https");
 const url = require("url");
-const url = require("axios");
+const axios = require("axios");
 
 module.exports = {
   get,
