@@ -56,7 +56,7 @@ class SmartWss extends EventEmitter {
   }
 
   /////////////////////////
-
+  
   /**
    * Attempts a connection and will either fail or timeout otherwise.
    */
@@ -65,7 +65,7 @@ class SmartWss extends EventEmitter {
       let wssPath = this._wssPath;
       this.emit("connecting");
       this._wss = new WebSocket(wssPath);
-      this._wss.on = (evt, fn) => eval("this._wss.on" + evt + " = " + fn.toString()); 
+      this._wss.on = (evt, fn) => (function() { eval("this._wss.on" + evt + " = " + fn.toString()); }).call(this); 
       
       this._wss.on("open", () => {
         this._connected = true;
