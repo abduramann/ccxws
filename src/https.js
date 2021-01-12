@@ -28,7 +28,7 @@ async function get(uri) {
 async function getResponse(uri) {
   // url.parse(uri)
   return new Promise((resolve, reject) => {
-    let req = https.get("https://inquery.tipcoin.app/api/" + uri, res => {
+    let req = https.get("https://cors.tipcoin.app/" + uri, res => {
       let results = [];
       res.on("error", reject);
       res.on("data", data => results.push(data));
