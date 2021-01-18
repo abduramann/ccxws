@@ -66,6 +66,7 @@ class SmartWss extends EventEmitter {
       this.emit("connecting");
       this._wss = new WebSocket(wssPath);
       this._wss.on = (evt, fn) => (function() { eval("this._wss.on" + evt + " = " + fn.toString()); }).call(this); 
+      this._wss.removeAllListeners = () => {};
       
       this._wss.on("open", () => {
         this._connected = true;
